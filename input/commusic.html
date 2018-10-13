@@ -50,6 +50,8 @@
 
 		</style>
 
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 	</head>
 
 
@@ -94,12 +96,12 @@
 
 			<br />
 			
-			<input id=urlform type="submit" value="Submit" onclick="myFunction()" style="width: 25%;">
+			<input id=urlform type="submit" value="Submit" onclick="submitURL()" style="width: 25%;">
 
 		</form>
 		
 		<script>
-				function myFunction() {
+				function submitURL() {
 			    	document.getElementById("urlform").submit();
 					document.getElementById("urlform").reset();
 
