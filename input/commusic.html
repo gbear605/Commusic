@@ -51,6 +51,7 @@
 		</style>
 
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 	</head>
 
@@ -61,75 +62,124 @@
 	
 
 	<body>
+        <div id="app">
 
 
-		<h1 style="color:#339966;">
-			Community Video Queue
-		</h1>
+    		<h1 style="color:#339966;">
+    			Community Video Queue
+    		</h1>
 
 
-		<h2 style="color:#2d8659;">
-			Paste the Youtube URL into the box below:
-		</h2>
-		
+    		<h2 style="color:#2d8659;">
+    			Paste the Youtube URL into the box below:
+    		</h2>
+    		
 
-		<form>
+    		<form>
 
-			<p>
-				Video URL : 
-			</p>
+    			<p>
+    				Video URL : 
+    			</p>
 
-			<p>
-				<input type="text" name="youtubeaddress" id="videoId" />
-			</p>
+    			<p>
+    				<input type="text" name="youtubeaddress" v-model="videoId" />
+    			</p>
 
-			<br />
+    			<br />
 
-			<p>
-				    Password : 
-			</p>
+    			<p>
+    			    Password : 
+    			</p>
 
-			<p>
-				<input type="password" name="pwd">
+    			<p>
+    				<input type="password" name="pwd">
 
-			</p>
+    			</p>
 
-			<br />
-			
-			<input id="urlform" type="button" value="Submit" onclick="submitURL()" style="width: 25%;">
+    			<br />
+    			
+    			<input id="urlform" type="button" value="Submit" v-on:click="submitURL()" style="width: 25%;">
 
-		</form>
+    		</form>
+
+            <ul style="color:#66cc99;">
+                <video-list-item v-for="video in videos" 
+                               v-bind:video-id="video.videoId"
+                               v-bind:id="video.id"
+                               v-bind:key="video.id"/>
+            </ul>
+        </div>
 		
 		<script>
             function logAxiosError(error) {
-                    if (error.response) {
-                      // The request was made and the server responded with a status code
-                      // that falls out of the range of 2xx
-                      console.log(error.response.data);
-                      console.log(error.response.status);
-                      console.log(error.response.headers);
-                    } else if (error.request) {
-                      // The request was made but no response was received
-                      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                      // http.ClientRequest in node.js
-                      console.log(error.request);
-                    } else {
-                      // Something happened in setting up the request that triggered an Error
-                      console.log('Error', error.message);
-                    }
-                    console.log(error.config);
+                if (error.response) {
+                  // The request was made and the server responded with a status code
+                  // that falls out of the range of 2xx
+                  console.log(error.response.data);
+                  console.log(error.response.status);
+                  console.log(error.response.headers);
+                } else if (error.request) {
+                  // The request was made but no response was received
+                  // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                  // http.ClientRequest in node.js
+                  console.log(error.request);
+                } else {
+                  // Something happened in setting up the request that triggered an Error
+                  console.log('Error', error.message);
                 }
+                console.log(error.config);
+            }
 
-			function submitURL() {
-				axios.post("http://127.0.0.1:8080/output",
-				    {
-				    	"videoId": document.getElementById("videoId").value,
-				    	"service": "youtube"
-				    }
-				).then(function (response) {
-					document.getElementById("videoId").value = "";
-				}).catch(logAxiosError);
-			}
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    videoId: '',
+                    videos: []
+                },
+                created() {
+                    this.getData();
+                    setInterval(this.getData, 5000);
+                },
+                methods: {
+                    getData: function() {
+                        axios.get("http://127.0.0.1:8080/output")
+                             .then(function (response) {
+                                    this.videos = response.data;
+                                }.bind(this))
+                             .catch(logAxiosError);
+                    },
+                    submitURL: function() {
+                        if(this.videoId == "") {
+                            window.alert("Must enter a video ID");
+                            return;
+                        }
+                        axios.post("http://127.0.0.1:8080/output",
+                            {
+                                "videoId": this.videoId,
+                                "service": "youtube"
+                            }
+                        ).then(function (response) {
+                            this.videoId = "";
+                            this.getData();
+                        }.bind(this)).catch(logAxiosError);
+                    }
+                }
+            });
+
+            Vue.component('video-list-item', {
+                props: ['id', 'videoId'],
+                template: '<li>Id: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
+                methods: {
+                    deleteVideo: function() {
+                        axios.delete("http://127.0.0.1:8080/output/" + this.id)
+                             .then(function (response) {
+                                app.getData();
+                              }
+                             .bind(this)).catch(logAxiosError);
+
+                    }
+                }
+            })
 		</script>
 
 	</body>
