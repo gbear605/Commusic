@@ -18,6 +18,9 @@
 				border: 3px solid #f0eef7;
 				border-radius: 100px; 
 			}
+			#urlform:hover {
+				border: 3px solid #9395dd; 
+			}
 
 			#grad2 {
 				background-size: cover;
@@ -26,6 +29,22 @@
     			/* alternative for browsers that do not support gradients */
     			background-color: #282046; 
 				}
+			button.deleter {
+				color: #9395dd;
+				background-color: #52418d;
+				border: 3px solid #f0eef7;
+				border-radius: 100px;
+				width: 20.5vw;
+				margin-right: 1vw;
+    			margin-left: 1vw;
+				
+			}
+			button.deleter:hover {
+				border: 3px solid #9395dd;
+				
+			}
+
+
 			html {
 				background-color: #282046; /* For browsers that do not support gradients */
 				margin: auto;
@@ -65,17 +84,39 @@
   				height: auto;
 				}
 
+			div.thumbnail {
+  				 margin: 5px;
+   				 border: 5px solid #9395dd;
+    			float: left;
+    			width: 22.5vw;
+    			border-radius: 20px;
+    			background-color: #1e1834;
+
+				}
+
+
+
+			div.thumbnail img {
+    			width: 100%;
+    			height: auto;
+    			padding-right: 1vw;
+    			padding-left: 1vw;
+    			border-radius: 18px;
+
+				}
+
+			div.desc {
+    			padding: 15px;
+    			text-align: center;
+    			color:#ffc34d;
+    			}
+
 		</style>
 
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 	</head>
-
-
-	<!--<div id="grad1" style="text-align:center;margin:auto;color:#d8e5f3;font-weight:bold;font-size:10vw;text-shadow: 3px 3px 5px #060c13;">
-		Commusic
-	</div>-->
 	
 
 	<body>
@@ -192,7 +233,7 @@
 
             Vue.component('video-list-item', {
                 props: ['id', 'videoId'],
-                template: '<li>Vid: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
+                template: `<div class="thumbnail"> <img :src="'https://img.youtube.com/vi/' +  videoId + '/default.jpg'" :alt="videoId"> <button class="deleter" v-on:click="deleteVideo">Delete</button> <div class="desc"> {{videoId}} </div> </div>`,
                 methods: {
                     deleteVideo: function() {
                         axios.delete("http://127.0.0.1:8080/output/" + this.id)
@@ -204,6 +245,9 @@
                     }
                 }
             })
+            
+
+
 		</script>
 
 	</body>
