@@ -30,8 +30,9 @@
                                 modestbranding: 1,
                                 iv_load_policy: 3}" 
                  player-width="1920" player-height="1080"
-                 @ready="ready" 
-                 @ended="ended"></youtube>
+                 @ready="ready"
+                 @ended="ended"
+                 @error="error"></youtube>
       </section>
     </div>
 
@@ -90,6 +91,10 @@
                     }.bind(this))
                  .catch(logAxiosError);
 
+          },
+          error () {
+            console.log("Errored");
+            this.nextVideo();
           },
           ended () {
             console.log("Ended");
