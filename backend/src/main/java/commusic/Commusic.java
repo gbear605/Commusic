@@ -1,8 +1,12 @@
 package commusic;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class Commusic {
+  
   public static void main(String[] args) {
-    Output output = new Output();
-    System.out.println(output.getVideoURL());
+    SpringApplication.run(Commusic.class, args);
   }
 }

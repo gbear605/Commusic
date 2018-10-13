@@ -1,18 +1,23 @@
-// Apply the java plugin to add support for Java
+// Set up springboot build script
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-mainClassName = 'commusic.Commusic'
-
-// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'mavenCentral' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
 }
 
-jar {
+bootJar {
     baseName = 'commusic'
     version = '0.1.0'
 }
@@ -20,7 +25,7 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-// In this section you declare the dependencies for your production and test code
 dependencies {
-    testCompile 'junit:junit:4.12'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
