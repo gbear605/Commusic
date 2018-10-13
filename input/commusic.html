@@ -197,7 +197,7 @@
                 template: '<li>Vid: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
                 methods: {
                     deleteVideo: function() {
-                        axios.delete(backend_url + this.id)
+                        axios.delete(backend_url + "/" + this.id)
                              .then(function (response) {
                                 app.getData();
                               }
