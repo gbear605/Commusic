@@ -1,6 +1,8 @@
 package commusic.output;
 
 public class Video {
+	
+    private int id;
 
 	private final String videoId;
 	private final String service;
@@ -38,6 +40,14 @@ public class Video {
 
 	public String getService() {
 		return service;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OutputService {
 	
-	//new Video("M7lc1UVf-VE", "youtube")
+	int nextId = 0;
+	
 	LinkedList<Video> videos = new LinkedList<Video>();
 	
 	public Video[] getVideos() {
@@ -15,15 +16,34 @@ public class OutputService {
 		return videos.toArray(videosArray);
 	}
 	
-	public Video get(int num) {
-		return videos.get(num);
+	public Video getById(int id) {
+		for(Video video: videos) {
+			if(video.getId() == id) {
+				return video;
+			}
+		}
+		return null;
 	}
 	
-	public void addVideo(Video video) {
+	public Video getNext() {
+		return videos.getFirst();
+	}
+	
+	public Video addVideo(Video video) {
+		video.setId(nextId);
+		nextId++;
 		videos.add(video);
+		
+		return video;
 	}
 
-	public void delete(int num) {
-		videos.remove(num);
+	public Video deleteById(int id) {
+		Video v = getById(id);
+		videos.remove(v);
+		return v;
+	}
+
+	public int length() {
+		return videos.size();
 	}
 }

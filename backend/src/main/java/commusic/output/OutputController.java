@@ -18,28 +18,44 @@ public class OutputController {
 	public OutputController(OutputService service) {
 		this.service = service;
 	}
-	
+
 	@RequestMapping(value = "/output", method = RequestMethod.GET)
 	public Video[] get() {
 		return service.getVideos();
 	}
 	
+	@RequestMapping(value = "/output/next", method = RequestMethod.GET)
+	public ResponseEntity<?> getNext() {
+		if(service.length() > 0) {
+			return new ResponseEntity<Video>(service.getNext(), HttpStatus.OK);
+		}
+		return new ResponseEntity<Video>(HttpStatus.NO_CONTENT);
+	}
+	
 	@RequestMapping(value = "/output", method = RequestMethod.POST)
 	public ResponseEntity<?> addVideo(@RequestBody Video video, UriComponentsBuilder ucBuilder) {
-		service.addVideo(video);
+		Video addedVideo = service.addVideo(video);
 		
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/output/{num}").buildAndExpand(service.getVideos().length).toUri());
+        headers.setLocation(ucBuilder.path("/output/{id}").buildAndExpand(addedVideo.getId()).toUri());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
 
-	@RequestMapping(value = "/output/{num}", method = RequestMethod.GET)
-	public Video getOne(@PathVariable("num") int num) {
-		return service.get(num);
+	@RequestMapping(value = "/output/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Video> getOne(@PathVariable("id") int num) {
+		Video v = service.getById(num);
+		if(v == null) {
+			return new ResponseEntity<Video>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Video>(v, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/output/{num}", method = RequestMethod.DELETE)
-	public void deleteVideo(@PathVariable("num") int num) {
-		service.delete(num);
+	@RequestMapping(value = "/output/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Video> deleteVideo(@PathVariable("id") int num) {
+		Video v = service.deleteById(num);
+		if(v == null) {
+			return new ResponseEntity<Video>(HttpStatus.GONE);
+		}
+		return new ResponseEntity<Video>(v, HttpStatus.OK);
 	}
 }

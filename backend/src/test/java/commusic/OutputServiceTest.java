@@ -16,17 +16,20 @@ import static org.junit.Assert.*;
 public class OutputServiceTest {
 
 	@Test
-	public void testOutputVideoURLExampleTest() {
+	public void basicAddDeleteTest() {
 		OutputService service = new OutputService();
 		
-		service.addVideo(new Video("M7lc1UVf-VE", "youtube"));
-		service.addVideo(new Video("other-id", "youtube"));
+		int idFirst = service.addVideo(new Video("M7lc1UVf-VE", "youtube")).getId();
+		int idSecond = service.addVideo(new Video("other-id", "youtube")).getId();
 		
-		assertEquals(new Video("M7lc1UVf-VE", "youtube"), service.get(0));
-		assertEquals(new Video("other-id", "youtube"), service.get(1));
+		assertEquals(new Video("M7lc1UVf-VE", "youtube"), service.getById(idFirst));
+		assertEquals(new Video("M7lc1UVf-VE", "youtube"), service.getNext());
+		assertEquals(new Video("other-id", "youtube"), service.getById(idSecond));
 		
-		service.delete(0);
+		service.deleteById(idFirst);
 		
-		assertEquals(new Video("other-id", "youtube"), service.get(0));
+		assertEquals(null, service.getById(idFirst));
+		assertEquals(new Video("other-id", "youtube"), service.getById(idSecond));
+		assertEquals(new Video("other-id", "youtube"), service.getNext());
 	}
 }
