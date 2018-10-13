@@ -3,6 +3,8 @@
 <html>
 
 	<head>
+		<link href='https://fonts.googleapis.com/css?family=Arya' rel='stylesheet'>
+		<link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
 
 		<title>
 			Commusic
@@ -10,23 +12,30 @@
 
 		<style>
 
+			#urlform {
+				color: #9395dd;
+				background-color: #52418d;
+				border: 3px solid #f0eef7;
+				border-radius: 100px; 
+			}
+
 			#grad2 {
 				background-size: cover;
 				width: cover;
     			box-shadow: 0px 0px 5 white;
     			/* alternative for browsers that do not support gradients */
-    			background-color: #141023; 
-    			/* gradient default */
-    			background-image: linear-gradient(to bottom right, #252774, #8b8dda, #141023);
+    			background-color: #282046; 
 				}
 			html {
-				background-color: #141023; /* For browsers that do not support gradients */
+				background-color: #282046; /* For browsers that do not support gradients */
 				margin: auto;
+				font-family: 'Amaranth';
 				}
 			p {
 				color:#ffaa00;
 				text-align: center;
 				margin:auto;
+				font-family: 'Amaranth';
 			}
 			h1 {
 				text-align: center;
@@ -38,6 +47,7 @@
 				text-align: center;
 				font-size:3vw;
 				text-shadow: -1px 0 #06130d, 0 1px #06130d, 1px 0 #06130d, 0 -1px #06130d;
+				font-family: 'Arya';
 			}
 			form {
 				text-align: center;
@@ -47,6 +57,8 @@
 			input {
     			width: 40%;
     			font-size:2.5vw;
+    			font-family: 'Amaranth';
+    			color:#282046;
 			}
 			img {
 				max-width: 90%;
@@ -180,7 +192,7 @@
 
             Vue.component('video-list-item', {
                 props: ['id', 'videoId'],
-                template: '<li>Id: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
+                template: '<li>Vid: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
                 methods: {
                     deleteVideo: function() {
                         axios.delete("http://127.0.0.1:8080/output/" + this.id)
