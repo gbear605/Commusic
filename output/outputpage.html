@@ -19,28 +19,26 @@
 
 	</head>
 
-	<body>
+	<body style="margin: 0">
 
 		<div id="app">
-      <section>
-        <h2>add options</h2>
-        
         <youtube :video-id="videoId" 
                  :player-vars="{autoplay: 1, 
                                 modestbranding: 1,
                                 iv_load_policy: 3}" 
-                 player-width="1920" player-height="1080"
+                 :player-width="width" :player-height="height"
                  @ready="ready"
                  @ended="ended"
-                 @error="error"></youtube>
-      </section>
+                 @error="error"
+                 @buffering="buffering"
+                 @playing="playing"
+                 @paused="paused"></youtube>
+
+      <div style="background: black;height: 5000px;width: 5000px;position: fixed;bottom: 0;right: 0;" v-bind:style="{'z-index': (showVideo ? '-1' : '1')}"></div>
     </div>
 
 		<script>
       var backend_url = "http://greenwichmeanti.me:8080/output";
-
-      var blank_video_id = "g8K21P8CoeI";
-      var other_blank_video_id = "14Cf79j92xA"
 
       function logAxiosError(error) {
           if (error.response) {
@@ -65,6 +63,9 @@
         el: '#app',
         data: {
           videoId: '',
+          showVideo: false,
+          height: window.innerHeight,
+          width: window.innerWidth,
         },
         created() {
             this.nextVideo();
@@ -78,11 +79,7 @@
                  .then(function (response) {
                       if(response.status == 204) {//no content
                         console.log("No next video");
-                        if(this.videoId == blank_video_id) {
-                          this.videoId = other_blank_video_id;
-                        } else {
-                          this.videoId = blank_video_id
-                        }
+                        setTimeout(this.nextVideo, 5000)
                       } else {
                         this.videoId = response.data.videoId;
                         axios.delete(backend_url  + "/" + response.data.id)
@@ -92,12 +89,23 @@
                  .catch(logAxiosError);
 
           },
+          buffering () {
+            this.showVideo = false;
+          },
+          playing () {
+            this.showVideo = true;
+          },
+          paused () {
+            this.showVideo = true;
+          },
           error () {
             console.log("Errored");
+            this.showVideo = false;
             this.nextVideo();
           },
           ended () {
             console.log("Ended");
+            this.showVideo = false;
             this.nextVideo();
           },
           change () {
