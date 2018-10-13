@@ -25,10 +25,12 @@ public class OutputControllerTest {
 
 	@Test
 	public void shouldReturnDefaultMessage() throws Exception {
-		this.mockMvc.perform(post("/output").content("{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\"}")
-											.contentType(MediaType.APPLICATION_JSON))
-				    .andDo(print()).andExpect(status().isOk());
+		this.mockMvc.perform(post("/output").content("{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\",\"id\":0}")
+				.contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isCreated());
 		this.mockMvc.perform(get("/output")).andDo(print()).andExpect(status().isOk())
-				.andExpect(content().json("[{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\"}]", false));
+				.andExpect(content().json("[{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\",\"id\":0}]", false));
+		this.mockMvc.perform(get("/output/0")).andDo(print()).andExpect(status().isOk())
+		.andExpect(content().json("{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\",\"id\":0}", false));
+		this.mockMvc.perform(get("/output/1")).andDo(print()).andExpect(status().isNotFound());
 	}
 }
