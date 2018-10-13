@@ -9,30 +9,107 @@
 			Commusic Player
 		</title>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="vue-youtube-embed.umd.js"></script>
+
+    <script>
+      Vue.use(VueYouTubeEmbed.default)
+    </script>
+
 	</head>
 
 	<body>
 
-		<div id="ytplayer"></div>
+		<div id="app">
+      <section>
+        <h2>add options</h2>
+        
+        <youtube :video-id="videoId" 
+                 :player-vars="{autoplay: 1, 
+                                modestbranding: 1,
+                                iv_load_policy: 3,
+                                controls: 0}" 
+                 player-width="1920" player-height="1080"
+                 @ready="ready" 
+                 @ended="ended"></youtube>
+      </section>
+    </div>
 
 		<script>
-  			// Load the IFrame Player API code asynchronously.
- 			 var tag = document.createElement('script');
- 			 tag.src = "https://www.youtube.com/player_api";
- 			 var firstScriptTag = document.getElementsByTagName('script')[0];
- 			 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      var blank_video_id = "g8K21P8CoeI";
+      var other_blank_video_id = "14Cf79j92xA"
 
-			  // Replace the 'ytplayer' element with an <iframe> and
- 			 // YouTube player after the API code downloads.
- 			 var player;
- 			 function onYouTubePlayerAPIReady() {
-  			  player = new YT.Player('ytplayer', {
-   			   height: '360',
-   			   width: '640',
-    		  videoId: 'M7lc1UVf-VE'
- 			   });
-			  }
-			</script>
+      function logAxiosError(error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+      }
+
+			const app = new Vue({
+        el: '#app',
+        data: {
+          videoId: '',
+        },
+        created() {
+            this.nextVideo();
+        },
+        methods: {
+          ready (event) {
+            this.player = event.target
+          },
+          nextVideo: function() {
+            axios.get("http://127.0.0.1:8080/output/next")
+                 .then(function (response) {
+                      if(response.status == 204) {//no content
+                        console.log("No next video");
+                        if(this.videoId == blank_video_id) {
+                          this.videoId = other_blank_video_id;
+                        } else {
+                          this.videoId = blank_video_id
+                        }
+                      } else {
+                        this.videoId = response.data.videoId;
+                        axios.delete("http://127.0.0.1:8080/output/" + response.data.id)
+                             .catch(logAxiosError);
+                      }
+                    }.bind(this))
+                 .catch(logAxiosError);
+
+          },
+          ended () {
+            console.log("Ended");
+            this.nextVideo();
+          },
+          change () {
+            // when you change the value, the player will also change.
+            // If you would like to change `playerVars`, please change it before you change `videoId`.
+            // If `playerVars.autoplay` is 1, `loadVideoById` will be called.
+            // If `playerVars.autoplay` is 0, `cueVideoById` will be called.
+            //this.videoId = '26XoeKq3Ics'
+          },
+          stop () {
+            //this.player.stopVideo()
+          },
+          pause () {
+            //this.player.pauseVideo()
+          }
+        }
+      })
+		</script>
 
 	</body>
 </html>
