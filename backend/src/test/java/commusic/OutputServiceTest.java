@@ -17,6 +17,16 @@ public class OutputServiceTest {
 
 	@Test
 	public void testOutputVideoURLExampleTest() {
-		assertEquals(new Video("M7lc1UVf-VE", "youtube"), new OutputService().getNextVideo());
+		OutputService service = new OutputService();
+		
+		service.addVideo(new Video("M7lc1UVf-VE", "youtube"));
+		service.addVideo(new Video("other-id", "youtube"));
+		
+		assertEquals(new Video("M7lc1UVf-VE", "youtube"), service.get(0));
+		assertEquals(new Video("other-id", "youtube"), service.get(1));
+		
+		service.delete(0);
+		
+		assertEquals(new Video("other-id", "youtube"), service.get(0));
 	}
 }

@@ -26,7 +26,10 @@ public class OutputHttpRequestTest {
 
 	@Test
 	public void urlShouldReturnDefault() throws Exception {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/output", Video.class))
-				.isEqualTo(new Video("M7lc1UVf-VE", "youtube"));
+		this.restTemplate.postForObject("http://localhost:" + port + "/output", new Video("M7lc1UVf-VE", "youtube"), String.class);
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/output/0", Video.class))
+			.isEqualTo(new Video("M7lc1UVf-VE", "youtube"));
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/output", Video[].class))
+			.isEqualTo(new Video[] {new Video("M7lc1UVf-VE", "youtube")});
 	}
 }
