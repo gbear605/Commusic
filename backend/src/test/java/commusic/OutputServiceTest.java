@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import commusic.output.OutputService;
+import commusic.output.Video;
 
 import static org.junit.Assert.*;
 
@@ -15,16 +15,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class OutputServiceTest {
 
-  @Autowired
-  private OutputController controller;
-
-  @Test
-  public void contexLoads() throws Exception {
-    assertThat(controller).isNotNull();
-  }
-
-  @Test
-  public void testOutputVideoURLExampleTest() {
-    assertEquals("https://example.com", new OutputService().getVideoURL());
-  }
+	@Test
+	public void testOutputVideoURLExampleTest() {
+		assertEquals(new Video("M7lc1UVf-VE", "youtube"), new OutputService().getNextVideo());
+	}
 }

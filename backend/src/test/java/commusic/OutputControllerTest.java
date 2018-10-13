@@ -9,20 +9,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import commusic.output.OutputController;
+
 @RunWith(SpringRunner.class)
-@WebMvcTest(OutputController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class OutputControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/output")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("https://example.com")));
-    }
+	@Test
+	public void shouldReturnDefaultMessage() throws Exception {
+		this.mockMvc.perform(get("/output")).andDo(print()).andExpect(status().isOk())
+				.andExpect(content().json("{\"videoId\":\"M7lc1UVf-VE\",\"service\":\"youtube\"}", false));
+	}
 }

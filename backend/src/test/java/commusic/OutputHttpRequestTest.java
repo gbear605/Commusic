@@ -12,19 +12,21 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import commusic.output.Video;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class OutputHttpRequestTest {
-  
-  @LocalServerPort
-  private int port;
 
-  @Autowired
-  private TestRestTemplate restTemplate;
-  
-  @Test
-  public void urlShouldReturnDefault() throws Exception {
-	  System.out.println(this.restTemplate.getForObject("http://localhost:" + port + "/output", String.class));
-	  assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/output", String.class)).contains("https://example.com");
-  }
+	@LocalServerPort
+	private int port;
+
+	@Autowired
+	private TestRestTemplate restTemplate;
+
+	@Test
+	public void urlShouldReturnDefault() throws Exception {
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/output", Video.class))
+				.isEqualTo(new Video("M7lc1UVf-VE", "youtube"));
+	}
 }
