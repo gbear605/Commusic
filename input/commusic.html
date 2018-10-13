@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>
+			Commusic
+		</title>
+
+		<style>
+
+			#grad1 {
+				background-size: cover;
+				width: cover;
+    			box-shadow: 0px 0px 5 #d8e5f3;
+    			/* alternative for browsers that do not support gradients */
+    			background-color: #0d1a26; 
+    			/* gradient default */
+    			background-image: linear-gradient(to bottom right, #2d5986, #009999, #0d1a26);
+				}
+			html {
+				background-color: #0d1a26; /* For browsers that do not support gradients */
+				margin: auto;
+				}
+			p {
+				color:#66cc99;
+				text-align: center;
+				margin:auto;
+			}
+			h1 {
+				text-align: center;
+				font-size:4vw;
+				letter-spacing: 1px;
+				text-shadow: -1px 0 ##339966, 0 1px #0d261a, 1px 0 #0d261a, 0 -1px #0d261a;
+			}
+			h2 {
+				text-align: center;
+				font-size:3vw;
+				text-shadow: -1px 0 #06130d, 0 1px #06130d, 1px 0 #06130d, 0 -1px #06130d;
+			}
+			form {
+				text-align: center;
+				font-size:2.5vw;
+			}
+			input {
+    			width: 40%;
+    			font-size:2.5vw;
+			}
+
+		</style>
+
+	</head>
+
+
+	<div id="grad1" style="text-align:center;margin:auto;color:#d8e5f3;font-weight:bold;font-size:10vw;text-shadow: 3px 3px 5px #060c13;">
+		Commusic
+	</div>
+	
+
+	<body>
+
+
+		<h1 style="color:#339966;">
+			Community Video Queue
+		</h1>
+
+
+		<h2 style="color:#2d8659;">
+			Paste the Youtube URL into the box below:
+		</h2>
+		
+
+		<form>
+
+			<p>
+				Video URL : 
+			</p>
+
+			<p>
+				<input type="text" name="youtubeaddress" <br />
+			</p>
+
+			<br />
+
+			<p>
+				    Password : 
+			</p>
+
+			<p>
+				<input type="password" name="pwd">
+
+			</p>
+
+			<br />
+			
+			<input id=urlform type="submit" value="Submit" onclick="myFunction()" style="width: 25%;">
+
+		</form>
+		
+		<script>
+				function myFunction() {
+			    	document.getElementById("urlform").submit();
+				}
+		</script>
+
+	</body>
+
+</html>
