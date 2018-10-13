@@ -80,7 +80,7 @@
 			</p>
 
 			<p>
-				<input type="text" name="youtubeaddress" <br />
+				<input type="text" name="youtubeaddress" id="videoId" />
 			</p>
 
 			<br />
@@ -96,14 +96,38 @@
 
 			<br />
 			
-			<input id=urlform type="submit" value="Submit" onclick="submitURL()" style="width: 25%;">
+			<input id="urlform" type="button" value="Submit" onclick="submitURL()" style="width: 25%;">
 
 		</form>
 		
 		<script>
 				function submitURL() {
-			    	document.getElementById("urlform").submit();
-					document.getElementById("urlform").reset();
+			    	//document.getElementById("urlform").submit();
+						axios.post("http://127.0.0.1:8080/output",
+						    {
+						    	"videoId": document.getElementById("videoId").value,
+						    	"service": "youtube"
+						    }
+						).then(function (response) {
+							document.getElementById("videoId").value = "";
+						}).catch(function (error) {
+                            if (error.response) {
+                              // The request was made and the server responded with a status code
+                              // that falls out of the range of 2xx
+                              console.log(error.response.data);
+                              console.log(error.response.status);
+                              console.log(error.response.headers);
+                            } else if (error.request) {
+                              // The request was made but no response was received
+                              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                              // http.ClientRequest in node.js
+                              console.log(error.request);
+                            } else {
+                              // Something happened in setting up the request that triggered an Error
+                              console.log('Error', error.message);
+                            }
+                            console.log(error.config);
+                        })
 
 				}
 		</script>
