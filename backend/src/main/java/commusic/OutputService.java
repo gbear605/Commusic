@@ -1,6 +1,6 @@
 package commusic;
 
-public class Output {
+public class OutputService {
   public String getVideoURL() {
     return "https://example.com";
   }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OutputController {
 
   @RequestMapping("/output")
-  public Output output() {
-    return new Output();
+  public OutputService output() {
+    return new OutputService();
   }
 }
