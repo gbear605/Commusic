@@ -1,4 +1,4 @@
 # Commusic
-Communal Music - HackUMassVI
-
 ![Commusic Logo](/commusiclogo.png)
+
+Communal Music - HackUMassVI
