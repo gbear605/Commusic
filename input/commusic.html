@@ -135,6 +135,8 @@
         </div>
 		
 		<script>
+            var backend_url = "http://greenwichmeanti.me:8080/output";
+
             function logAxiosError(error) {
                 if (error.response) {
                   // The request was made and the server responded with a status code
@@ -166,7 +168,7 @@
                 },
                 methods: {
                     getData: function() {
-                        axios.get("http://127.0.0.1:8080/output")
+                        axios.get(backend_url)
                              .then(function (response) {
                                     this.videos = response.data;
                                 }.bind(this))
@@ -177,7 +179,7 @@
                             window.alert("Must enter a video ID");
                             return;
                         }
-                        axios.post("http://127.0.0.1:8080/output",
+                        axios.post(backend_url,
                             {
                                 "videoId": this.videoId,
                                 "service": "youtube"
@@ -195,7 +197,7 @@
                 template: '<li>Vid: {{videoId}} <button v-on:click="deleteVideo">Delete</button></li>',
                 methods: {
                     deleteVideo: function() {
-                        axios.delete("http://127.0.0.1:8080/output/" + this.id)
+                        axios.delete(backend_url + this.id)
                              .then(function (response) {
                                 app.getData();
                               }

@@ -37,6 +37,8 @@
     </div>
 
 		<script>
+      var backend_url = "http://greenwichmeanti.me:8080/output";
+
       var blank_video_id = "g8K21P8CoeI";
       var other_blank_video_id = "14Cf79j92xA"
 
@@ -72,7 +74,7 @@
             this.player = event.target
           },
           nextVideo: function() {
-            axios.get("http://127.0.0.1:8080/output/next")
+            axios.get(backend_url + "next")
                  .then(function (response) {
                       if(response.status == 204) {//no content
                         console.log("No next video");
@@ -83,7 +85,7 @@
                         }
                       } else {
                         this.videoId = response.data.videoId;
-                        axios.delete("http://127.0.0.1:8080/output/" + response.data.id)
+                        axios.delete(backend_url + response.data.id)
                              .catch(logAxiosError);
                       }
                     }.bind(this))
