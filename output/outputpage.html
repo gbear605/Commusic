@@ -79,7 +79,7 @@
                  .then(function (response) {
                       if(response.status == 204) {//no content
                         console.log("No next video");
-                        setTimeout(this.nextVideo, 5000)
+                        setTimeout(this.nextVideo, 1000)
                       } else {
                         this.videoId = response.data.videoId;
                         axios.delete(backend_url  + "/" + response.data.id)
